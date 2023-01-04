@@ -35,7 +35,7 @@ function App() {
           e.preventDefault();
           setSearchInput(e.target.value);
         }}
-        value={searchInput ? searchInput : "LE2"}
+        value={searchInput}
       />
       {areas.map((area) => {
         return (
@@ -44,14 +44,10 @@ function App() {
               <Grid item className="card-content">
                 <Card>
                   <CardContent>
-                    <div className="card-header">
-                      <div className="card-info">
-                        <p>
-                          Place Name:
-                          {area["place name"]} <br />{" "}
-                        </p>
-                      </div>
-                    </div>
+                    <p>
+                      Place Name:
+                      {area["place name"]} <br />{" "}
+                    </p>
                     <p>Latitude: {area.latitude}</p>
                     <p>
                       Longitude:
