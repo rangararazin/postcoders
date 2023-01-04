@@ -1,31 +1,25 @@
 import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
+import { Card, CardContent, Grid } from "@mui/material";
 
 import "./App.css";
 
 function App() {
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const load = async () => {
-    try {
-      const areaData = await getAreaData();
-
-      areas.concat(areaData);
-
-      setAreas(areas);
-    } catch (error) {
-      window.alert("todo: fix app");
-    }
-  };
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
-    getAreaData().then((res) => {
-      setAreas(res);
-      setLoading(false);
-    });
-    load();
+    getAreaData(searchInput)
+      .then((res) => {
+        setAreas(res);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+  console.log(searchInput);
 
   return loading ? (
     <p>loading....</p>
@@ -33,6 +27,52 @@ function App() {
     <div className="App">
       <h1>Postcoders</h1>
       <h2>{`Areas for BB10: ${areas.length}`}</h2>
+      <label>Enter postcode outcode </label>
+      <input
+        type="text"
+        placeholder=" eg. LE2,M1,BB8, . ."
+        onChange={(e) => {
+          e.preventDefault();
+          setSearchInput(e.target.value);
+        }}
+        value={searchInput ? searchInput : "LE2"}
+      />
+      {areas.map((area) => {
+        return (
+          <>
+            <Grid container key={area.longitude}>
+              <Grid item className="card-content">
+                <Card>
+                  <CardContent>
+                    <div className="card-header">
+                      <div className="card-info">
+                        <p>
+                          Place Name:
+                          {area["place name"]} <br />{" "}
+                        </p>
+                      </div>
+                    </div>
+                    <p>Latitude: {area.latitude}</p>
+                    <p>
+                      Longitude:
+                      {area.longitude}
+                      <br />{" "}
+                    </p>
+                    <p>
+                      State: {area.state}
+                      <br />{" "}
+                    </p>
+                    <p>
+                      Abbreviation: {area["state abbreviation"]}
+                      <br />{" "}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+          </>
+        );
+      })}
     </div>
   );
 }
