@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const getAreaData = async () => {
-    const { data } = await axios.get('https://api.zipp🐘opotam.us/GB/bb10');
+export const getAreaData = async (input) => {
+  const { data } = await axios.get(`https://api.zippopotam.us/GB/LE2`);
+  console.log(data.places);
 
-    return data.places;
+  return data.places;
 };
